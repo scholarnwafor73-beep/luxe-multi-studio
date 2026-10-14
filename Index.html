@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuxeVibe | Universal Business Showcase</title>
+    <style>
+        :root {
+            --bg-deep: #0B0711;
+            --card-glass: rgba(25, 15, 35, 0.75);
+            --border-glow: rgba(255, 110, 199, 0.35);
+            --primary-pink: #FF6EC7;
+            --accent-gold: #E5C158;
+            --text-light: #F9F4FE;
+            --text-muted: #D1BCE3;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .glow-orb {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255, 110, 199, 0.18) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+            filter: blur(40px);
+        }
+        .orb-1 { top: -50px; left: -50px; }
+        .orb-2 { bottom: -50px; right: -50px; background: radial-gradient(circle, rgba(229, 193, 88, 0.12) 0%, transparent 70%); }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 450px;
+            background: var(--card-glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glow);
+            border-radius: 28px;
+            padding: 28px 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 110, 199, 0.15);
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(255, 110, 199, 0.12);
+            border: 1px solid rgba(255, 110, 199, 0.4);
+            color: var(--primary-pink);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 6px 14px;
+            border-radius: 50px;
+            margin-bottom: 14px;
+        }
+
+        h1 {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--text-light);
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+        h1 span {
+            background: linear-gradient(135deg, var(--primary-pink), var(--accent-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p.subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        /* Scrollable Tab Bar for Multiple Niche Demos */
+        .tabs-wrapper {
+            overflow-x: auto;
+            scrollbar-width: none; /* Firefox */
+            margin-bottom: 20px;
+        }
+        .tabs-wrapper::-webkit-scrollbar {
+            display: none; /* Chrome/Safari */
+        }
+
+        .tabs {
+            display: flex;
+            gap: 6px;
+            background: rgba(15, 9, 22, 0.8);
+            padding: 5px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            width: max-content;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 11.5px;
+            font-weight: 600;
+            padding: 8px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #FF6EC7, #E5C158);
+            color: #0B0711;
+            box-shadow: 0 4px 15px rgba(255, 110, 199, 0.4);
+        }
+
+        .features-box {
+            background: rgba(15, 9, 22, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 10px;
+        }
+        .feature-item:last-child {
+            margin-bottom: 0;
+        }
+        .feature-item span.icon {
+            color: var(--primary-pink);
+            font-weight: bold;
+        }
+
+        .cta-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #FF6EC7, #FF3399);
+            color: #fff;
+            border: none;
+            font-size: 15px;
+            font-weight: 700;
+            padding: 15px;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(255, 110, 199, 0.45);
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(255, 110, 199, 0.65);
+        }
+
+        .petal {
+            position: fixed;
+            pointer-events: none;
+            animation: fall linear forwards;
+            z-index: 9999;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-20px) rotate(0deg) scale(0.8); opacity: 1; }
+            100% { transform: translateY(105vh) rotate(360deg) scale(1.2); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+
+    <div class="container">
+        <div class="badge">✨ Universal Small Business Template</div>
+        
+        <h1 id="main-title">LuxeVibe <span>Hair Salon</span></h1>
+        <p class="subtitle" id="main-subtitle">Experience elite bone-straight styling, custom coloring, and seamless luxury extensions crafted for queens.</p>
+
+        <!-- Horizontal Scrollable Category Tabs -->
+        <div class="tabs-wrapper">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchNiche('hair')">👑 Hair Salon</button>
+                <button class="tab-btn" onclick="switchNiche('lash')">👁️ Lash Tech</button>
+                <button class="tab-btn" onclick="switchNiche('nail')">💅 Nail Tech</button>
+                <button class="tab-btn" onclick="switchNiche('barber')">💈 Barber Shop</button>
+                <button class="tab-btn" onclick="switchNiche('cafe')">☕ Coffee Bar</button>
+            </div>
+        </div>
+
+        <div class="features-box" id="feature-box">
+            <div class="feature-item"><span class="icon">✦</span> Premium Peruvian & Cambodian Hair Bundles</div>
+            <div class="feature-item"><span class="icon">✦</span> Bone Straight Installs & Custom Revamping</div>
+            <div class="feature-item"><span class="icon">✦</span> Complimentary Champagne & VIP Lounge Vibe</div>
+        </div>
+
+        <button class="cta-btn" id="cta-btn" onclick="triggerMagic()">Book VIP Appointment 🌸</button>
+    </div>
+
+    <script>
+        let currentEmojis = ['🌸', '✨', '💖', '🌷', '💫'];
+
+        function switchNiche(niche) {
+            const title = document.getElementById('main-title');
+            const subtitle = document.getElementById('main-subtitle');
+            const featureBox = document.getElementById('feature-box');
+            const ctaBtn = document.getElementById('cta-btn');
+            const buttons = document.querySelectorAll('.tab-btn');
+
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            if (niche === 'hair') {
+                title.innerHTML = `LuxeVibe <span>Hair Salon</span>`;
+                subtitle.innerText = `Experience elite bone-straight styling, custom coloring, and seamless luxury extensions.`;
+                featureBox.innerHTML = `
+                    <div class="feature-item"><span class="icon">✦</span> Premium Peruvian & Cambodian Hair Bundles</div>
+                    <div class="feature-item"><span class="icon">✦</span> Bone Straight Installs & Custom Revamping</div>
+                    <div class="feature-item"><span class="icon">✦</span> VIP Lounge & Complimentary Drinks</div>
+                `;
+                ctaBtn.innerText = `Book VIP Appointment 🌸`;
+                currentEmojis = ['🌸', '✨', '💖', '👑', '💫'];
+            } 
+            else if (niche === 'lash') {
+                title.innerHTML = `LuxeVibe <span>Lash Studio</span>`;
+                subtitle.innerText = `Weightless mega-volume extensions, wispy cat-eyes, and custom lash maps.`;
+                featureBox.innerHTML = `
+                    <div class="feature-item"><span class="icon">✦</span> Cashmere & Silk Extensions</div>
+                    <div class="feature-item"><span class="icon">✦</span> Zero Lash Damage Guarantee</div>
+                    <div class="feature-item"><span class="icon">✦</span> Complimentary Aftercare Kit</div>
+                `;
+                ctaBtn.innerText = `Book Lash Appointment 👁️`;
+                currentEmojis = ['👁️', '✨', '💖', '🌸', '💫'];
+            }
+            else if (niche === 'nail') {
+                title.innerHTML = `LuxeVibe <span>Nail Atelier</span>`;
+                subtitle.innerText = `Custom Gel-X extensions, intricate 3D nail art, and long-lasting acrylic sets.`;
+                featureBox.innerHTML = `
+                    <div class="feature-item"><span class="icon">✦</span> Non-Toxic Gel & Premium Acrylics</div>
+                    <div class="feature-item"><span class="icon">✦</span> Custom Hand-Painted Nail Art</div>
+                    <div class="feature-item"><span class="icon">✦</span> Luxury Cuticle Care & Spa Scrub</div>
+                `;
+                ctaBtn.innerText = `Book Nail Session 💅`;
+                currentEmojis = ['💅', '✨', '💎', '💖', '🌸'];
+            }
+            else if (niche === 'barber') {
+                title.innerHTML = `LuxeVibe <span>Barber Club</span>`;
+                subtitle.innerText = `Precision razor fades, hot towel beard sculpting, and executive grooming.`;
+                featureBox.innerHTML = `
+                    <div class="feature-item"><span class="icon">✦</span> Sharp Razor Fades & Line-ups</div>
+                    <div class="feature-item"><span class="icon">✦</span> Essential Oil Hot Towel Facial Treatment</div>
+                    <div class="feature-item"><span class="icon">✦</span> VIP Beverage Service & Chill Lounge</div>
+                `;
+                ctaBtn.innerText = `Reserve Barber Chair 💈`;
+                currentEmojis = ['💈', '✨', '⚡', '🔥', '💫'];
+            }
+            else if (niche === 'cafe') {
+                title.innerHTML = `LuxeVibe <span>Artisan Cafe</span>`;
+                subtitle.innerText = `Single-origin espresso brews, velvety lattes, and fresh gourmet pastries.`;
+                featureBox.innerHTML = `
+                    <div class="feature-item"><span class="icon">✦</span> Specialty Arabica Coffee Beans</div>
+                    <div class="feature-item"><span class="icon">✦</span> Freshly Baked Butter Croissants</div>
+                    <div class="feature-item"><span class="icon">✦</span> Cozy Aesthetic Space & Fast Wi-Fi</div>
+                `;
+                ctaBtn.innerText = `Order / Book Table ☕`;
+                currentEmojis = ['☕', '🥐', '✨', '🍰', '💫'];
+            }
+        }
+
+        function triggerMagic() {
+            for (let i = 0; i < 22; i++) {
+                const petal = document.createElement('div');
+                petal.classList.add('petal');
+                petal.innerText = currentEmojis[Math.floor(Math.random() * currentEmojis.length)];
+                petal.style.left = Math.random() * window.innerWidth + 'px';
+                petal.style.top = '-30px';
+                petal.style.fontSize = (Math.random() * 16 + 14) + 'px';
+                
+                const duration = Math.random() * 2 + 1.5;
+                petal.style.animationDuration = duration + 's';
+                
+                document.body.appendChild(petal);
+                
+                setTimeout(() => {
+                    petal.remove();
+                }, duration * 1000);
+            }
+        }
+    </script>
+</body>
+</html>
